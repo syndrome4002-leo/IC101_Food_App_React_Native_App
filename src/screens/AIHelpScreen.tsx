@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
-  sidebarLogo: { height: 32, width: 120 },
+  sidebarLogo: { height: 60, width: 120 },
   closeButton: { width: 32, height: 32, borderRadius: 16, backgroundColor: 'rgba(255,255,255,0.1)', alignItems: 'center', justifyContent: 'center' },
   closeIcon: { color: Colors.white, fontSize: 14, fontWeight: '600' },
   sidebarMenu: { paddingTop: 12 },

@@ -75,7 +75,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
   const slideAnim = useRef(new Animated.Value(SIDEBAR_WIDTH)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current;
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
+  const abortRef = useRef<AbortController | null>(null);
   const isMounted = useRef(false);
 
   useEffect(() => {
@@ -94,18 +94,29 @@ export default function FoodSearchScreen({ navigation }: Props) {
   }, [searchKey, status]);
 
   const fetchResults = async (key: string, st: StatusFilter) => {
+    if (abortRef.current) abortRef.current.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     try {
       setLoading(true);
       const params = new URLSearchParams({ search_key: key });
       if (st !== 'all') params.append('status', st);
-      const response = await fetch(`${API_BASE_URL}/search/types?${params.toString()}`);
+      const response = await fetch(`${API_BASE_URL}/search/types?${params.toString()}`, {
+        signal: controller.signal,
+      });
       if (!response.ok) throw new Error(`${response.status}`);
       const data: SearchResult[] = await response.json();
-      setResults(data);
-    } catch {
+      if (!controller.signal.aborted) {
+        setResults(data);
+      }
+    } catch (err: any) {
+      if (err?.name === 'AbortError') return;
       setResults([]);
     } finally {
-      setLoading(false);
+      if (!controller.signal.aborted) {
+        setLoading(false);
+      }
     }
   };
 
