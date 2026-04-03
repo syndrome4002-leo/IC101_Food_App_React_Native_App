@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "IC101 Food App",
+    "slug": "ic101-food-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#18b4c8"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ic101.foodapp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#18b4c8"
+      },
+      "package": "com.ic101.foodapp"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0ac4e33d-ef4f-4388-91db-e735ad3f5cb1"
+      }
+    }
+  }
+}
