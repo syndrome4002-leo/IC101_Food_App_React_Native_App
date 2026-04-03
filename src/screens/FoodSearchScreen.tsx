@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useFocusEffect } from '@react-navigation/native';
 import { SkeletonList } from '../components/Skeleton';
 import { Colors } from '../theme/colors';
 import { SearchResult, StatusFilter, FoodStatus, RootStackParamList } from '../types';
@@ -77,6 +78,10 @@ export default function FoodSearchScreen({ navigation }: Props) {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const isMounted = useRef(false);
+
+  useFocusEffect(useCallback(() => {
+    setActiveMenu('search');
+  }, []));
 
   useEffect(() => {
     fetchResults('', 'all');

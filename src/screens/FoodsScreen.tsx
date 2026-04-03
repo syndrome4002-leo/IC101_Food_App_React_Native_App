@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { SkeletonList } from '../components/Skeleton';
 import { Colors } from '../theme/colors';
 import { Food, FoodType, FoodStatus, RootStackParamList } from '../types';
@@ -58,6 +58,10 @@ export default function FoodsScreen({ navigation, route }: Props) {
   useEffect(() => {
     fetchFoods();
   }, []);
+
+  useFocusEffect(useCallback(() => {
+    setActiveMenu('categories');
+  }, []));
 
   const openSidebar = () => {
     setSidebarVisible(true);

@@ -288,7 +288,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.sidebarBg,
     paddingHorizontal: 16,
     paddingVertical: 10,
-    paddingTop: Platform.OS === 'android' ? (StatusBar.currentHeight ?? 0) + 10 : 10,
   },
   navTitle: {
     fontSize: 16,
