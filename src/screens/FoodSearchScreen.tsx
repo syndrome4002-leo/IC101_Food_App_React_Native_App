@@ -221,6 +221,10 @@ export default function FoodSearchScreen({ navigation }: Props) {
           </TouchableOpacity>
 
           {dropdownOpen && (
+            <>
+            <TouchableWithoutFeedback onPress={() => setDropdownOpen(false)}>
+              <View style={styles.dropdownBackdrop} />
+            </TouchableWithoutFeedback>
             <View style={styles.dropdownList}>
               {STATUS_OPTIONS.map(opt => (
                 <TouchableOpacity
@@ -235,6 +239,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
                 </TouchableOpacity>
               ))}
             </View>
+            </>
           )}
         </View>
       </View>
@@ -409,6 +414,14 @@ const styles = StyleSheet.create({
   dropdownArrow: {
     fontSize: 10,
     color: Colors.textMuted,
+  },
+  dropdownBackdrop: {
+    position: 'absolute',
+    top: -1000,
+    left: -1000,
+    right: -1000,
+    bottom: -1000,
+    zIndex: 99,
   },
   dropdownList: {
     position: 'absolute',
