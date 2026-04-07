@@ -133,18 +133,19 @@ export default function FoodSearchScreen({ navigation }: Props) {
     ]).start();
   };
 
-  const closeSidebar = () => {
+  const closeSidebar = (onDone?: () => void) => {
     Animated.parallel([
       Animated.timing(slideAnim, { toValue: SIDEBAR_WIDTH, duration: 280, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
       Animated.timing(overlayAnim, { toValue: 0, duration: 280, easing: Easing.in(Easing.cubic), useNativeDriver: true }),
-    ]).start(() => setSidebarVisible(false));
+    ]).start(() => { setSidebarVisible(false); onDone?.(); });
   };
 
   const handleMenuPress = (key: string) => {
     setActiveMenu(key);
-    closeSidebar();
-    if (key === 'categories') navigation.navigate('Categories');
-    if (key === 'ai') navigation.navigate('AIHelp');
+    closeSidebar(() => {
+      if (key === 'categories') navigation.navigate('Categories');
+      if (key === 'ai') navigation.navigate('AIHelp');
+    });
   };
 
   const selectedStatusLabel = STATUS_OPTIONS.find(o => o.value === status)?.label ?? 'All';

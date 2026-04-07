@@ -71,7 +71,7 @@ export default function CategoriesScreen({ navigation }: Props) {
     ]).start();
   };
 
-  const closeSidebar = () => {
+  const closeSidebar = (onDone?: () => void) => {
     Animated.parallel([
       Animated.timing(slideAnim, {
         toValue: SIDEBAR_WIDTH,
@@ -85,7 +85,7 @@ export default function CategoriesScreen({ navigation }: Props) {
         easing: Easing.in(Easing.cubic),
         useNativeDriver: true,
       }),
-    ]).start(() => setSidebarVisible(false));
+    ]).start(() => { setSidebarVisible(false); onDone?.(); });
   };
 
   const fetchCategories = async () => {
@@ -201,9 +201,10 @@ export default function CategoriesScreen({ navigation }: Props) {
                   activeOpacity={0.8}
                   onPress={() => {
                     setActiveMenu(item.key);
-                    closeSidebar();
-                    if (item.key === 'search') navigation.navigate('FoodSearch');
-                    if (item.key === 'ai') navigation.navigate('AIHelp');
+                    closeSidebar(() => {
+                      if (item.key === 'search') navigation.navigate('FoodSearch');
+                      if (item.key === 'ai') navigation.navigate('AIHelp');
+                    });
                   }}
                 >
                   <Text style={styles.menuItemIcon}>{item.icon}</Text>
