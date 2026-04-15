@@ -43,10 +43,10 @@ const STATUS_OPTIONS: { label: string; value: StatusFilter }[] = [
   { label: 'Avoid',            value: 'avoid' },
 ];
 
-const STATUS_CONFIG: Record<FoodStatus, { label: string; color: string; bg: string }> = {
-  bladder_friendly: { label: 'Bladder Friendly', color: Colors.bladderFriendly, bg: Colors.bladderFriendlyBg },
-  worth_try:        { label: 'Worth a Try',      color: Colors.worthTry,        bg: Colors.worthTryBg },
-  avoid:            { label: 'Avoid',             color: Colors.avoid,           bg: Colors.avoidBg },
+const STATUS_CONFIG: Record<FoodStatus, { icon: string; label: string; color: string; bg: string }> = {
+  bladder_friendly: { icon: '💚', label: 'Bladder Friendly', color: Colors.bladderFriendly, bg: Colors.bladderFriendlyBg },
+  worth_try:        { icon: '⚠️', label: 'Worth a Try',      color: Colors.worthTry,        bg: Colors.worthTryBg },
+  avoid:            { icon: '❌', label: 'Avoid',             color: Colors.avoid,           bg: Colors.avoidBg },
 };
 
 function Highlight({ text, keyword, style }: { text: string; keyword: string; style?: object }) {
@@ -158,7 +158,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
           <View style={styles.cardTitleRow}>
             <Highlight text={item.food} keyword={searchKey} style={styles.foodName} />
             <View style={[styles.badge, { backgroundColor: cfg.bg }]}>
-              <Text style={[styles.badgeText, { color: cfg.color }]}>{cfg.label}</Text>
+              <Text style={[styles.badgeText, { color: cfg.color }]}>{cfg.icon} {cfg.label}</Text>
             </View>
           </View>
           {item.food_note
@@ -271,9 +271,9 @@ export default function FoodSearchScreen({ navigation }: Props) {
       )}
 
       {/* Sidebar */}
-      <Modal visible={sidebarVisible} transparent animationType="none" onRequestClose={closeSidebar}>
+      <Modal visible={sidebarVisible} transparent animationType="none" onRequestClose={() => closeSidebar()}>
         <View style={styles.sidebarContainer}>
-          <TouchableWithoutFeedback onPress={closeSidebar}>
+          <TouchableWithoutFeedback onPress={() => closeSidebar()}>
             <Animated.View style={[styles.sidebarOverlay, { opacity: overlayAnim }]} />
           </TouchableWithoutFeedback>
           <Animated.View style={[styles.sidebar, { transform: [{ translateX: slideAnim }] }]}>
@@ -283,7 +283,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
                 style={styles.sidebarLogo}
                 resizeMode="contain"
               />
-              <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
+              <TouchableOpacity onPress={() => closeSidebar()} style={styles.closeButton}>
                 <Text style={styles.closeIcon}>✕</Text>
               </TouchableOpacity>
             </View>

@@ -82,7 +82,44 @@ function TypingIndicator() {
   );
 }
 
-function MessageBubble({ message }: { message: Message }) {
+function FormattedText({ text, style }: { text: string; style?: object }) {
+  const parts = text.split(/(\*\*.*?\*\*)/g);
+  return (
+    <Text style={style}>
+      {parts.map((part, i) =>
+        part.startsWith('**') && part.endsWith('**')
+          ? <Text key={i} style={{ fontWeight: '700' }}>{part.slice(2, -2)}</Text>
+          : part
+      )}
+    </Text>
+  );
+}
+
+function TypewriterText({ text, style, speed = 12, onTick }: {
+  text: string; style?: object; speed?: number; onTick?: () => void;
+}) {
+  const [length, setLength] = useState(0);
+
+  useEffect(() => {
+    setLength(0);
+    let i = 0;
+    const timer = setInterval(() => {
+      i++;
+      // Speed through whitespace/newlines in bursts
+      while (i < text.length && (text[i] === ' ' || text[i] === '\n')) i++;
+      setLength(i);
+      onTick?.();
+      if (i >= text.length) clearInterval(timer);
+    }, speed);
+    return () => clearInterval(timer);
+  }, [text]);
+
+  return <FormattedText text={text.slice(0, length)} style={style} />;
+}
+
+function MessageBubble({ message, typewriter = false, onTick }: {
+  message: Message; typewriter?: boolean; onTick?: () => void;
+}) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(10)).current;
 
@@ -107,7 +144,10 @@ function MessageBubble({ message }: { message: Message }) {
     <Animated.View style={[styles.aiRow, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
       <View style={styles.aiAvatar}><Text style={styles.aiAvatarText}>🤖</Text></View>
       <View style={styles.aiBubble}>
-        <Text style={styles.aiText}>{message.text}</Text>
+        {typewriter
+          ? <TypewriterText text={message.text} style={styles.aiText} onTick={onTick} />
+          : <FormattedText text={message.text} style={styles.aiText} />
+        }
       </View>
     </Animated.View>
   );
@@ -115,6 +155,7 @@ function MessageBubble({ message }: { message: Message }) {
 
 export default function AIHelpScreen({ navigation }: Props) {
   const [messages, setMessages] = useState<Message[]>([WELCOME]);
+  const [typingMsgId, setTypingMsgId] = useState<string>('welcome');
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -123,6 +164,7 @@ export default function AIHelpScreen({ navigation }: Props) {
   const flatListRef = useRef<FlatList>(null);
   const slideAnim = useRef(new Animated.Value(SIDEBAR_WIDTH)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current;
+  const userScrolledUp = useRef(false);
 
   useFocusEffect(useCallback(() => {
     setActiveMenu('ai');
@@ -130,6 +172,18 @@ export default function AIHelpScreen({ navigation }: Props) {
 
   const scrollToBottom = () => {
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
+  };
+
+  // Only scroll if user hasn't manually scrolled up
+  const autoScroll = () => {
+    if (userScrolledUp.current) return;
+    flatListRef.current?.scrollToEnd({ animated: false });
+  };
+
+  const handleScroll = (e: any) => {
+    const { layoutMeasurement, contentOffset, contentSize } = e.nativeEvent;
+    const distFromBottom = contentSize.height - (contentOffset.y + layoutMeasurement.height);
+    userScrolledUp.current = distFromBottom > 80;
   };
 
   const sendMessage = async () => {
@@ -140,25 +194,51 @@ export default function AIHelpScreen({ navigation }: Props) {
     setMessages(prev => [...prev, userMsg]);
     setInput('');
     setIsTyping(true);
+    userScrolledUp.current = false;
     scrollToBottom();
 
     try {
-      const response = await fetch(`${API_BASE_URL}/ai/chat`, {
+      const response = await fetch(`${API_BASE_URL}/extract-food`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text }),
       });
       const data = await response.json();
-      const aiMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        text: data.reply ?? data.message ?? 'Sorry, I could not process that.',
-        isUser: false,
-      };
+
+      let replyText = '';
+      const raw = data.answer ?? '';
+
+      if (raw.includes('```json')) {
+        try {
+          const jsonStr = raw.replace(/```json\n?/g, '').replace(/```/g, '').trim();
+          const parsed = JSON.parse(jsonStr);
+          replyText = parsed.answer || '';
+          if (parsed.reason) {
+            replyText += '\n\n📋 Reason:\n' + parsed.reason;
+          }
+          if (parsed.what_ICN_mention_importantly) {
+            replyText += '\n\n⚠️ Important:\n' + parsed.what_ICN_mention_importantly;
+          }
+          if (parsed.additional_info) {
+            replyText += '\n\n💡 Additional info:\n' + parsed.additional_info;
+          }
+        } catch {
+          replyText = raw;
+        }
+      } else {
+        replyText = raw || 'Sorry, I could not process that.';
+      }
+
+      const aiId = (Date.now() + 1).toString();
+      const aiMsg: Message = { id: aiId, text: replyText, isUser: false };
+      setTypingMsgId(aiId);
       setMessages(prev => [...prev, aiMsg]);
     } catch {
+      const errId = (Date.now() + 1).toString();
+      setTypingMsgId(errId);
       setMessages(prev => [
         ...prev,
-        { id: (Date.now() + 1).toString(), text: 'Sorry, I\'m having trouble connecting right now. Please try again.', isUser: false },
+        { id: errId, text: 'Sorry, I\'m having trouble connecting right now. Please try again.', isUser: false },
       ]);
     } finally {
       setIsTyping(false);
@@ -195,7 +275,10 @@ export default function AIHelpScreen({ navigation }: Props) {
 
       {/* Navbar */}
       <View style={styles.navbar}>
-        <Text style={styles.navTitle}>🤖  AI Help</Text>
+        <View>
+          <Text style={styles.navTitle}>🤖  AI Help</Text>
+          <Text style={styles.navSubtitle}>Each question is answered independently</Text>
+        </View>
         <TouchableOpacity style={styles.menuButton} activeOpacity={0.6} onPress={openSidebar}>
           <View style={styles.hamburgerLine} />
           <View style={styles.hamburgerLine} />
@@ -205,7 +288,7 @@ export default function AIHelpScreen({ navigation }: Props) {
 
       <KeyboardAvoidingView
         style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={0}
       >
         {/* Messages */}
@@ -213,10 +296,17 @@ export default function AIHelpScreen({ navigation }: Props) {
           ref={flatListRef}
           data={messages}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => <MessageBubble message={item} />}
+          renderItem={({ item }) => (
+            <MessageBubble
+              message={item}
+              typewriter={item.id === typingMsgId && !item.isUser}
+            />
+          )}
           contentContainerStyle={styles.messageList}
-          showsVerticalScrollIndicator={false}
-          onContentSizeChange={scrollToBottom}
+          showsVerticalScrollIndicator={true}
+          onContentSizeChange={autoScroll}
+          onScroll={handleScroll}
+          scrollEventThrottle={100}
           ListFooterComponent={isTyping ? <TypingIndicator /> : null}
         />
 
@@ -243,15 +333,15 @@ export default function AIHelpScreen({ navigation }: Props) {
       </KeyboardAvoidingView>
 
       {/* Sidebar */}
-      <Modal visible={sidebarVisible} transparent animationType="none" onRequestClose={closeSidebar}>
+      <Modal visible={sidebarVisible} transparent animationType="none" onRequestClose={() => closeSidebar()}>
         <View style={styles.sidebarContainer}>
-          <TouchableWithoutFeedback onPress={closeSidebar}>
+          <TouchableWithoutFeedback onPress={() => closeSidebar()}>
             <Animated.View style={[styles.sidebarOverlay, { opacity: overlayAnim }]} />
           </TouchableWithoutFeedback>
           <Animated.View style={[styles.sidebar, { transform: [{ translateX: slideAnim }] }]}>
             <View style={styles.sidebarHeader}>
               <Image source={require('../../assets/logo.png')} style={styles.sidebarLogo} resizeMode="contain" />
-              <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
+              <TouchableOpacity onPress={() => closeSidebar()} style={styles.closeButton}>
                 <Text style={styles.closeIcon}>✕</Text>
               </TouchableOpacity>
             </View>
@@ -294,6 +384,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: Colors.white,
+  },
+  navSubtitle: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.6)',
+    marginTop: 2,
   },
   menuButton: {
     width: 40,

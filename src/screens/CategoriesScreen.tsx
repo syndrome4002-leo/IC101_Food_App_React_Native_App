@@ -168,10 +168,10 @@ export default function CategoriesScreen({ navigation }: Props) {
       )}
 
       {/* Sidebar Drawer */}
-      <Modal visible={sidebarVisible} transparent animationType="none" onRequestClose={closeSidebar}>
+      <Modal visible={sidebarVisible} transparent animationType="none" onRequestClose={() => closeSidebar()}>
         <View style={styles.modalContainer}>
           {/* Dim overlay */}
-          <TouchableWithoutFeedback onPress={closeSidebar}>
+          <TouchableWithoutFeedback onPress={() => closeSidebar()}>
             <Animated.View style={[styles.overlay, { opacity: overlayAnim }]} />
           </TouchableWithoutFeedback>
 
@@ -184,7 +184,7 @@ export default function CategoriesScreen({ navigation }: Props) {
                 style={styles.sidebarLogo}
                 resizeMode="contain"
               />
-              <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
+              <TouchableOpacity onPress={() => closeSidebar()} style={styles.closeButton}>
                 <Text style={styles.closeIcon}>✕</Text>
               </TouchableOpacity>
             </View>

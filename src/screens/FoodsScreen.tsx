@@ -37,10 +37,10 @@ const MENU_ITEMS = [
   { key: 'ai',         label: 'AI Help',          icon: '🤖' },
 ];
 
-const STATUS_CONFIG: Record<FoodStatus, { label: string; color: string; bg: string }> = {
-  bladder_friendly: { label: 'Bladder Friendly', color: Colors.bladderFriendly, bg: Colors.bladderFriendlyBg },
-  worth_try:        { label: 'Worth a Try',      color: Colors.worthTry,        bg: Colors.worthTryBg },
-  avoid:            { label: 'Avoid',             color: Colors.avoid,           bg: Colors.avoidBg },
+const STATUS_CONFIG: Record<FoodStatus, { icon: string; label: string; color: string; bg: string }> = {
+  bladder_friendly: { icon: '💚', label: 'Bladder Friendly', color: Colors.bladderFriendly, bg: Colors.bladderFriendlyBg },
+  worth_try:        { icon: '⚠️', label: 'Worth a Try',      color: Colors.worthTry,        bg: Colors.worthTryBg },
+  avoid:            { icon: '❌', label: 'Avoid',             color: Colors.avoid,           bg: Colors.avoidBg },
 };
 
 export default function FoodsScreen({ navigation, route }: Props) {
@@ -203,7 +203,7 @@ export default function FoodsScreen({ navigation, route }: Props) {
                         <View style={styles.typeCardHeader}>
                           <Text style={styles.typeName}>{t.name}</Text>
                           <View style={[styles.badge, { backgroundColor: cfg.bg }]}>
-                            <Text style={[styles.badgeText, { color: cfg.color }]}>{cfg.label}</Text>
+                            <Text style={[styles.badgeText, { color: cfg.color }]}>{cfg.icon} {cfg.label}</Text>
                           </View>
                         </View>
                         {t.note ? <Text style={styles.typeNote}>{t.note}</Text> : null}
@@ -222,9 +222,9 @@ export default function FoodsScreen({ navigation, route }: Props) {
       </Modal>
 
       {/* Sidebar Drawer */}
-      <Modal visible={sidebarVisible} transparent animationType="none" onRequestClose={closeSidebar}>
+      <Modal visible={sidebarVisible} transparent animationType="none" onRequestClose={() => closeSidebar()}>
         <View style={styles.sidebarContainer}>
-          <TouchableWithoutFeedback onPress={closeSidebar}>
+          <TouchableWithoutFeedback onPress={() => closeSidebar()}>
             <Animated.View style={[styles.sidebarOverlay, { opacity: overlayAnim }]} />
           </TouchableWithoutFeedback>
           <Animated.View style={[styles.sidebar, { transform: [{ translateX: slideAnim }] }]}>
@@ -234,7 +234,7 @@ export default function FoodsScreen({ navigation, route }: Props) {
                 style={styles.sidebarLogo}
                 resizeMode="contain"
               />
-              <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
+              <TouchableOpacity onPress={() => closeSidebar()} style={styles.closeButton}>
                 <Text style={styles.closeIcon}>✕</Text>
               </TouchableOpacity>
             </View>
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
   typeCard: {
     backgroundColor: Colors.bodyBg,
     borderRadius: Colors.radius,
-    borderLeftWidth: 3,
+    borderLeftWidth: 4,
     padding: 10,
     marginBottom: 8,
   },

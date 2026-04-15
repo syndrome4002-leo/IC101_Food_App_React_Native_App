@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#18b4c8"
+      "backgroundColor": "#0284c7"
     },
     "ios": {
       "supportsTablet": true,
@@ -22,16 +22,17 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#18b4c8"
+        "backgroundColor": "#0284c7"
       },
-      "package": "com.ic101.foodapp"
+      "package": "com.ic101.foodapp",
+      "softwareKeyboardLayoutMode": "resize"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "0ac4e33d-ef4f-4388-91db-e735ad3f5cb1"
+        "projectId": "38be6b4e-4afb-464e-b5b2-8413fa177d24"
       }
     }
   }
