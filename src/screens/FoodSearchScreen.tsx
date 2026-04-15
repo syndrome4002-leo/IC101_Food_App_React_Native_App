@@ -182,7 +182,10 @@ export default function FoodSearchScreen({ navigation }: Props) {
 
       {/* Navbar */}
       <View style={styles.navbar}>
-        <Text style={styles.navTitle}>🔍  Food Search</Text>
+        <View>
+          <Text style={styles.navTitle}>🔍  Food Search</Text>
+          <Text style={styles.navSubtitle}>Search foods by key and status</Text>
+        </View>
         <TouchableOpacity style={styles.menuButton} activeOpacity={0.6} onPress={openSidebar}>
           <View style={styles.hamburgerLine} />
           <View style={styles.hamburgerLine} />
@@ -336,10 +339,14 @@ const styles = StyleSheet.create({
     lineHeight: 40,
   },
   navTitle: {
-    flex: 1,
     fontSize: 16,
     fontWeight: '700',
     color: Colors.white,
+  },
+  navSubtitle: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.6)',
+    marginTop: 2,
   },
   menuButton: {
     width: 40,
