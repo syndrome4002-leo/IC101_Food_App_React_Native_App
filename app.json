@@ -10,11 +10,12 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#16a34a"
+      "backgroundColor": "#34D399"
     },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ic101.foodapp",
+      "buildNumber": "1",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -22,14 +23,14 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#16a34a"
+        "backgroundColor": "#34D399"
       },
       "package": "com.ic101.foodapp",
       "softwareKeyboardLayoutMode": "resize",
       "splash": {
         "image": "./assets/splash-icon.png",
         "resizeMode": "contain",
-        "backgroundColor": "#16a34a"
+        "backgroundColor": "#34D399"
       }
     },
     "web": {
