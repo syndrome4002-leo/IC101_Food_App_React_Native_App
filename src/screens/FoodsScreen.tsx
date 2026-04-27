@@ -15,7 +15,7 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { SkeletonList } from '../components/Skeleton';
@@ -44,6 +44,7 @@ const STATUS_CONFIG: Record<FoodStatus, { icon: string; label: string; color: st
 };
 
 export default function FoodsScreen({ navigation, route }: Props) {
+  const insets = useSafeAreaInsets();
   const { categoryId, categoryName } = route.params;
   const [foods, setFoods] = useState<Food[]>([]);
   const [loading, setLoading] = useState(true);
@@ -128,7 +129,7 @@ export default function FoodsScreen({ navigation, route }: Props) {
       <StatusBar backgroundColor={Colors.sidebarBg} barStyle="light-content" />
 
       {/* Navbar */}
-      <View style={styles.navbar}>
+      <View style={[styles.navbar, { paddingTop: insets.top + 10 }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Text style={styles.backIcon}>‹</Text>
         </TouchableOpacity>

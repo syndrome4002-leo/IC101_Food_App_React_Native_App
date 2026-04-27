@@ -15,7 +15,7 @@ import {
   Dimensions,
   TextInput,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { SkeletonList } from '../components/Skeleton';
@@ -65,6 +65,7 @@ function Highlight({ text, keyword, style }: { text: string; keyword: string; st
 }
 
 export default function FoodSearchScreen({ navigation }: Props) {
+  const insets = useSafeAreaInsets();
   const [searchKey, setSearchKey] = useState('');
   const [status, setStatus] = useState<StatusFilter>('all');
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -181,7 +182,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
       <StatusBar backgroundColor={Colors.sidebarBg} barStyle="light-content" />
 
       {/* Navbar */}
-      <View style={styles.navbar}>
+      <View style={[styles.navbar, { paddingTop: insets.top + 10 }]}>
         <View>
           <Text style={styles.navTitle}>🔍  Food Search</Text>
           <Text style={styles.navSubtitle}>Search foods by key and status</Text>

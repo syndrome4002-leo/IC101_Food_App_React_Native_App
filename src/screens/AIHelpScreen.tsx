@@ -16,7 +16,7 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors } from '../theme/colors';
@@ -154,6 +154,7 @@ function MessageBubble({ message, typewriter = false, onTick }: {
 }
 
 export default function AIHelpScreen({ navigation }: Props) {
+  const insets = useSafeAreaInsets();
   const [messages, setMessages] = useState<Message[]>([WELCOME]);
   const [typingMsgId, setTypingMsgId] = useState<string>('welcome');
   const [input, setInput] = useState('');
@@ -274,7 +275,7 @@ export default function AIHelpScreen({ navigation }: Props) {
       <StatusBar backgroundColor={Colors.sidebarBg} barStyle="light-content" />
 
       {/* Navbar */}
-      <View style={styles.navbar}>
+      <View style={[styles.navbar, { paddingTop: insets.top + 10 }]}>
         <View>
           <Text style={styles.navTitle}>🤖  AI Help</Text>
           <Text style={styles.navSubtitle}>Each question is answered independently</Text>

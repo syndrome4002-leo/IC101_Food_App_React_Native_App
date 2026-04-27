@@ -15,7 +15,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { SkeletonList } from '../components/Skeleton';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors } from '../theme/colors';
@@ -36,6 +36,7 @@ const MENU_ITEMS = [
 ];
 
 export default function CategoriesScreen({ navigation }: Props) {
+  const insets = useSafeAreaInsets();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -122,7 +123,7 @@ export default function CategoriesScreen({ navigation }: Props) {
       <StatusBar backgroundColor={Colors.sidebarBg} barStyle="light-content" />
 
       {/* Navbar */}
-      <View style={styles.navbar}>
+      <View style={[styles.navbar, { paddingTop: insets.top + 10 }]}>
         <Image
           source={require('../../assets/logo.png')}
           style={styles.navLogoImage}
