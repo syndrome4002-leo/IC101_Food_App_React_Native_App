@@ -34,6 +34,7 @@ const MENU_ITEMS = [
   { key: 'categories', label: 'Categories List', icon: '📋' },
   { key: 'search',     label: 'Food Search',     icon: '🔍' },
   { key: 'ai',         label: 'AI Help',          icon: '🤖' },
+  { key: 'about',      label: 'About Us',         icon: 'ℹ️' },
 ];
 
 const STATUS_OPTIONS: { label: string; value: StatusFilter }[] = [
@@ -146,6 +147,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
     closeSidebar(() => {
       if (key === 'categories') navigation.navigate('Categories');
       if (key === 'ai') navigation.navigate('AIHelp');
+      if (key === 'about') navigation.navigate('AboutUs');
     });
   };
 

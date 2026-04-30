@@ -37,4 +37,5 @@ export type RootStackParamList = {
   Foods: { categoryId: string; categoryName: string };
   FoodSearch: undefined;
   AIHelp: undefined;
+  AboutUs: undefined;
 };

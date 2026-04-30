@@ -35,6 +35,7 @@ const MENU_ITEMS = [
   { key: 'categories', label: 'Categories List', icon: '📋' },
   { key: 'search',     label: 'Food Search',     icon: '🔍' },
   { key: 'ai',         label: 'AI Help',          icon: '🤖' },
+  { key: 'about',      label: 'About Us',         icon: 'ℹ️' },
 ];
 
 const STATUS_CONFIG: Record<FoodStatus, { icon: string; label: string; color: string; bg: string }> = {
@@ -251,6 +252,7 @@ export default function FoodsScreen({ navigation, route }: Props) {
                       if (item.key === 'search') navigation.navigate('FoodSearch');
                       if (item.key === 'categories') navigation.navigate('Categories');
                       if (item.key === 'ai') navigation.navigate('AIHelp');
+                      if (item.key === 'about') navigation.navigate('AboutUs');
                     });
                   }}
                 >

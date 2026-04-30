@@ -33,6 +33,7 @@ const MENU_ITEMS = [
   { key: 'categories', label: 'Categories List', icon: '📋' },
   { key: 'search',     label: 'Food Search',     icon: '🔍' },
   { key: 'ai',         label: 'AI Help',          icon: '🤖' },
+  { key: 'about',      label: 'About Us',         icon: 'ℹ️' },
 ];
 
 export default function CategoriesScreen({ navigation }: Props) {
@@ -205,6 +206,7 @@ export default function CategoriesScreen({ navigation }: Props) {
                     closeSidebar(() => {
                       if (item.key === 'search') navigation.navigate('FoodSearch');
                       if (item.key === 'ai') navigation.navigate('AIHelp');
+                      if (item.key === 'about') navigation.navigate('AboutUs');
                     });
                   }}
                 >

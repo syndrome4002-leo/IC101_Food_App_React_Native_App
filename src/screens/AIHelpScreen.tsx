@@ -40,6 +40,7 @@ const MENU_ITEMS = [
   { key: 'categories', label: 'Categories List', icon: '📋' },
   { key: 'search',     label: 'Food Search',     icon: '🔍' },
   { key: 'ai',         label: 'AI Help',          icon: '🤖' },
+  { key: 'about',      label: 'About Us',         icon: 'ℹ️' },
 ];
 
 const WELCOME: Message = {
@@ -267,6 +268,7 @@ export default function AIHelpScreen({ navigation }: Props) {
     closeSidebar(() => {
       if (key === 'categories') navigation.navigate('Categories');
       if (key === 'search') navigation.navigate('FoodSearch');
+      if (key === 'about') navigation.navigate('AboutUs');
     });
   };
 
