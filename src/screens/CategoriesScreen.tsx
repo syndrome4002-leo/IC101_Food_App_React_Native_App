@@ -36,6 +36,31 @@ const MENU_ITEMS = [
   { key: 'about',      label: 'About Us',         icon: 'ℹ️' },
 ];
 
+// Custom category display order — most-used food types first, supplements/additives last
+const CATEGORY_ORDER = [
+  'Fruits & Vegetables',
+  'Grains, Breads & Pastries',
+  'Dairy',
+  'Meats',
+  'Beverages (Coffee, Tea, Juice, Alcohol)',
+  'Snacks & Sweets',
+  'Spices',
+  'Condiments, Dressings, Oils & Soup',
+  'Food Additives',
+  'Vitamins & Supplements',
+];
+
+function sortCategories(list: Category[]): Category[] {
+  return [...list].sort((a, b) => {
+    const ai = CATEGORY_ORDER.indexOf(a.name);
+    const bi = CATEGORY_ORDER.indexOf(b.name);
+    if (ai === -1 && bi === -1) return a.name.localeCompare(b.name);
+    if (ai === -1) return 1;   // unknown → push to end
+    if (bi === -1) return -1;
+    return ai - bi;
+  });
+}
+
 export default function CategoriesScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const [categories, setCategories] = useState<Category[]>([]);
@@ -97,7 +122,7 @@ export default function CategoriesScreen({ navigation }: Props) {
       const response = await fetch(`${API_BASE_URL}/categories`);
       if (!response.ok) throw new Error(`Server responded with ${response.status}`);
       const data: Category[] = await response.json();
-      setCategories(data);
+      setCategories(sortCategories(data));
     } catch (err) {
       setError('Failed to load categories. Please try again.');
     } finally {
@@ -272,12 +297,12 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
   },
   pageTitle: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: '700',
     color: Colors.textHeading,
   },
   pageCount: {
-    fontSize: 13,
+    fontSize: 15,
     color: Colors.textMuted,
   },
 
@@ -309,16 +334,16 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   cardIndexText: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: '700',
     color: Colors.primary,
   },
   cardName: {
     flex: 1,
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: '500',
     color: Colors.text,
-    lineHeight: 20,
+    lineHeight: 24,
   },
   cardChevron: {
     fontSize: 22,

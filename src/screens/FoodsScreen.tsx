@@ -44,6 +44,12 @@ const STATUS_CONFIG: Record<FoodStatus, { icon: string; label: string; color: st
   avoid:            { icon: '❌', label: 'Avoid',             color: Colors.avoid,           bg: Colors.avoidBg },
 };
 
+const STATUS_RANK: Record<FoodStatus, number> = {
+  bladder_friendly: 0,
+  worth_try: 1,
+  avoid: 2,
+};
+
 export default function FoodsScreen({ navigation, route }: Props) {
   const insets = useSafeAreaInsets();
   const { categoryId, categoryName } = route.params;
@@ -107,6 +113,7 @@ export default function FoodsScreen({ navigation, route }: Props) {
       const response = await fetch(`${API_BASE_URL}/categories/${categoryId}/foods`);
       if (!response.ok) throw new Error(`Server responded with ${response.status}`);
       const data: Food[] = await response.json();
+      data.sort((a, b) => a.name.localeCompare(b.name));
       setFoods(data);
     } catch (err) {
       setError('Failed to load foods. Please try again.');
@@ -198,7 +205,10 @@ export default function FoodsScreen({ navigation, route }: Props) {
                 {/* Types */}
                 <Text style={styles.modalSectionTitle}>Types</Text>
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.modalScroll}>
-                  {selectedFood?.types.map((t: FoodType) => {
+                  {selectedFood?.types
+                    .slice()
+                    .sort((a, b) => STATUS_RANK[a.status] - STATUS_RANK[b.status])
+                    .map((t: FoodType) => {
                     const cfg = STATUS_CONFIG[t.status] ?? STATUS_CONFIG.avoid;
                     return (
                       <View key={t._id} style={[styles.typeCard, { borderLeftColor: cfg.color }]}>
@@ -298,7 +308,7 @@ const styles = StyleSheet.create({
   },
   navTitle: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
     color: Colors.white,
     textAlign: 'center',
@@ -325,7 +335,7 @@ const styles = StyleSheet.create({
     paddingBottom: 6,
   },
   pageCount: {
-    fontSize: 13,
+    fontSize: 15,
     color: Colors.textMuted,
   },
 
@@ -352,15 +362,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   foodName: {
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: '600',
     color: Colors.textHeading,
   },
   foodNote: {
-    fontSize: 13,
+    fontSize: 15,
     color: Colors.textMuted,
-    marginTop: 3,
-    lineHeight: 18,
+    marginTop: 4,
+    lineHeight: 21,
   },
   cardChevron: {
     fontSize: 22,
@@ -427,7 +437,7 @@ const styles = StyleSheet.create({
   },
   modalFoodName: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 21,
     fontWeight: '700',
     color: Colors.textHeading,
   },
@@ -445,18 +455,18 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   modalFoodNote: {
-    fontSize: 13,
+    fontSize: 15,
     color: Colors.textMuted,
-    marginBottom: 12,
-    lineHeight: 20,
+    marginBottom: 14,
+    lineHeight: 22,
   },
   modalSectionTitle: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '700',
     color: Colors.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 0.8,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   modalScroll: {
     maxHeight: 280,
@@ -476,25 +486,25 @@ const styles = StyleSheet.create({
   },
   typeName: {
     flex: 1,
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '500',
     color: Colors.text,
-    lineHeight: 18,
+    lineHeight: 21,
   },
   badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
+    paddingHorizontal: 9,
+    paddingVertical: 4,
     borderRadius: 20,
   },
   badgeText: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '600',
   },
   typeNote: {
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.textMuted,
-    marginTop: 5,
-    lineHeight: 17,
+    marginTop: 6,
+    lineHeight: 19,
     fontStyle: 'italic',
   },
   modalCloseBtn: {

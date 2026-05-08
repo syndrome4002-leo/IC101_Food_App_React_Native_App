@@ -342,7 +342,7 @@ const styles = StyleSheet.create({
     lineHeight: 40,
   },
   navTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
     color: Colors.white,
   },
@@ -391,9 +391,9 @@ const styles = StyleSheet.create({
   },
   searchInput: {
     flex: 1,
-    fontSize: 15,
+    fontSize: 16,
     color: Colors.text,
-    paddingVertical: 11,
+    paddingVertical: 12,
   },
   clearButton: {
     padding: 4,
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
 
   // Results
   resultCount: {
-    fontSize: 13,
+    fontSize: 15,
     color: Colors.textMuted,
     marginBottom: 10,
   },
@@ -510,14 +510,14 @@ const styles = StyleSheet.create({
   },
   foodName: {
     flex: 1,
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: '700',
     color: Colors.textHeading,
   },
   foodNote: {
-    fontSize: 13,
+    fontSize: 15,
     color: Colors.textMuted,
-    lineHeight: 18,
+    lineHeight: 21,
   },
   typeDivider: {
     height: 1,
@@ -539,24 +539,24 @@ const styles = StyleSheet.create({
   },
   typeName: {
     flex: 1,
-    fontSize: 13,
+    fontSize: 15,
     color: Colors.text,
-    lineHeight: 19,
+    lineHeight: 22,
   },
   typeNote: {
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.textMuted,
-    marginTop: 4,
-    lineHeight: 17,
+    marginTop: 5,
+    lineHeight: 19,
     fontStyle: 'italic',
   },
   badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
+    paddingHorizontal: 9,
+    paddingVertical: 4,
     borderRadius: 20,
   },
   badgeText: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '600',
   },
   separator: {

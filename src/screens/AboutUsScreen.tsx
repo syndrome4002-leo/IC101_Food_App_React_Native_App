@@ -161,7 +161,11 @@ export default function AboutUsScreen({ navigation }: Props) {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Who We Are</Text>
           <Text style={styles.paragraph}>
-            The Interstitial Cystitis Network is a woman-owned health education company dedicated to
+            The{' '}
+            <Text style={styles.link} onPress={() => openLink('https://www.icnetwork.org')}>
+              Interstitial Cystitis Network
+            </Text>
+            {' '}is a woman-owned health education company dedicated to
             interstitial cystitis, overactive bladder, and pelvic pain disorders. We create innovative
             solutions to the pressing problems facing patients diagnosed with urologic conditions,
             medical care providers who care for them, and the research community seeking new treatments
@@ -172,6 +176,12 @@ export default function AboutUsScreen({ navigation }: Props) {
             new educational materials, conducted vital research, provided webinars/lectures, and created
             IC awareness campaigns, all at <Text style={styles.bold}>NO COST</Text> to the patients who
             visit our website.
+          </Text>
+          <Text style={styles.paragraph}>
+            Learn more about IC and the diet at:{' '}
+            <Text style={styles.link} onPress={() => openLink('https://www.icnetwork.org')}>
+              www.icnetwork.org
+            </Text>
           </Text>
         </View>
 
@@ -328,6 +338,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   bold: { fontWeight: '700', color: Colors.textHeading },
+  link: {
+    color: Colors.primary,
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+  },
 
   // Link cards
   linkCard: {
