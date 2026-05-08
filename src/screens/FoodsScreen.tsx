@@ -426,7 +426,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 16,
-    maxHeight: '75%',
+    maxHeight: '85%',
   },
   modalHeader: {
     flexDirection: 'row',
@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   modalScroll: {
-    maxHeight: 280,
+    flexShrink: 1,
   },
   typeCard: {
     backgroundColor: Colors.bodyBg,
