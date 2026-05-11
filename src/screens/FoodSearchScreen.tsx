@@ -296,7 +296,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
           }
           ListFooterComponent={
             visibleCount < results.length
-              ? <Text style={styles.loadMoreHint}>Scroll for more...</Text>
+              ? <Text style={styles.loadMoreHint}>Loading more...</Text>
               : null
           }
           onEndReached={loadMore}
