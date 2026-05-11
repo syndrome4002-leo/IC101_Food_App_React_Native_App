@@ -50,20 +50,28 @@ const STATUS_CONFIG: Record<FoodStatus, { icon: string; label: string; color: st
   avoid:            { icon: '❌', label: 'Avoid',             color: Colors.avoid,           bg: Colors.avoidBg },
 };
 
-function Highlight({ text, keyword, style }: { text: string; keyword: string; style?: object }) {
+const Highlight = React.memo(function Highlight({ text, keyword, style }: {
+  text: string | null | undefined;
+  keyword: string;
+  style?: object;
+}) {
+  if (!text) return null;
   if (!keyword.trim()) return <Text style={style}>{text}</Text>;
   const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const parts = text.split(new RegExp(`(${escaped})`, 'gi'));
+  const lowerKey = keyword.toLowerCase();
   return (
     <Text style={style}>
       {parts.map((part, i) =>
-        part.toLowerCase() === keyword.toLowerCase()
+        part.toLowerCase() === lowerKey
           ? <Text key={i} style={styles.highlight}>{part}</Text>
           : part
       )}
     </Text>
   );
-}
+});
+
+const PAGE_SIZE = 30;
 
 export default function FoodSearchScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
@@ -71,6 +79,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
   const [status, setStatus] = useState<StatusFilter>('all');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [results, setResults] = useState<SearchResult[]>([]);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(true);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [activeMenu, setActiveMenu] = useState('search');
@@ -87,6 +96,11 @@ export default function FoodSearchScreen({ navigation }: Props) {
 
   useEffect(() => {
     fetchResults('', 'all');
+    // Cleanup on unmount — abort any in-flight request, clear debounce
+    return () => {
+      if (abortRef.current) abortRef.current.abort();
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
   }, []);
 
   useEffect(() => {
@@ -116,14 +130,21 @@ export default function FoodSearchScreen({ navigation }: Props) {
       const data: SearchResult[] = await response.json();
       if (!controller.signal.aborted) {
         setResults(data);
+        setVisibleCount(PAGE_SIZE);
       }
     } catch (err: any) {
       if (err?.name === 'AbortError') return;
-      setResults([]);
+      if (!controller.signal.aborted) setResults([]);
     } finally {
       if (!controller.signal.aborted) {
         setLoading(false);
       }
+    }
+  };
+
+  const loadMore = () => {
+    if (visibleCount < results.length) {
+      setVisibleCount(c => Math.min(c + PAGE_SIZE, results.length));
     }
   };
 
@@ -153,7 +174,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
 
   const selectedStatusLabel = STATUS_OPTIONS.find(o => o.value === status)?.label ?? 'All';
 
-  const renderResult = ({ item }: { item: SearchResult }) => {
+  const renderResult = useCallback(({ item }: { item: SearchResult }) => {
     const cfg = STATUS_CONFIG[item.status] ?? STATUS_CONFIG.avoid;
     return (
       <View style={styles.card}>
@@ -177,7 +198,7 @@ export default function FoodSearchScreen({ navigation }: Props) {
           : null}
       </View>
     );
-  };
+  }, [searchKey]);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
@@ -263,8 +284,8 @@ export default function FoodSearchScreen({ navigation }: Props) {
         </View>
       ) : (
         <FlatList
-          data={results}
-          keyExtractor={(_, i) => i.toString()}
+          data={results.slice(0, visibleCount)}
+          keyExtractor={(item, i) => `${item.food}-${item.type}-${i}`}
           renderItem={renderResult}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
@@ -273,6 +294,18 @@ export default function FoodSearchScreen({ navigation }: Props) {
           ListHeaderComponent={
             <Text style={styles.resultCount}>{results.length} result{results.length !== 1 ? 's' : ''}</Text>
           }
+          ListFooterComponent={
+            visibleCount < results.length
+              ? <Text style={styles.loadMoreHint}>Scroll for more...</Text>
+              : null
+          }
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.4}
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          updateCellsBatchingPeriod={50}
+          windowSize={7}
+          removeClippedSubviews
         />
       )}
 
@@ -481,6 +514,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.textMuted,
     marginBottom: 10,
+  },
+  loadMoreHint: {
+    fontSize: 13,
+    color: Colors.textMuted,
+    textAlign: 'center',
+    paddingVertical: 16,
+    fontStyle: 'italic',
   },
   listContent: {
     paddingHorizontal: 16,
