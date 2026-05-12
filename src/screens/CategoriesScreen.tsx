@@ -150,12 +150,10 @@ export default function CategoriesScreen({ navigation }: Props) {
 
       {/* Navbar */}
       <View style={[styles.navbar, { paddingTop: insets.top + 10 }]}>
-        <Image
-          source={require('../../assets/logo.png')}
-          style={styles.navLogoImage}
-          resizeMode="contain"
-        />
-
+        <View>
+          <Text style={styles.navTitle}>🌼  IC101 Food App</Text>
+          <Text style={styles.navSubtitle}>Interstitial Cystitis Network</Text>
+        </View>
         <TouchableOpacity style={styles.menuButton} activeOpacity={0.6} onPress={openSidebar}>
           <View style={styles.hamburgerLine} />
           <View style={styles.hamburgerLine} />
@@ -269,9 +267,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
   },
-  navLogoImage: {
-    height: 40,
-    width: 100,
+  navTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: Colors.white,
+  },
+  navSubtitle: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.6)',
+    marginTop: 2,
   },
   menuButton: {
     width: 40,

@@ -339,7 +339,7 @@ const styles = StyleSheet.create({
   },
   bold: { fontWeight: '700', color: Colors.textHeading },
   link: {
-    color: Colors.primary,
+    color: '#1F7A3A',
     fontWeight: '600',
     textDecorationLine: 'underline',
   },
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
   linkAction: {
     fontSize: 13,
     fontWeight: '600',
-    color: Colors.primaryHover,
+    color: '#1F7A3A',
   },
 
   // Book cards

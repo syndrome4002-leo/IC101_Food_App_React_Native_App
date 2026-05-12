@@ -6,6 +6,7 @@ import {
   Animated,
   Dimensions,
   StatusBar,
+  Image,
 } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Colors } from '../theme/colors';
@@ -52,9 +53,11 @@ export default function SplashScreen({ navigation }: Props) {
           { opacity: fadeAnim, transform: [{ scale: scaleAnim }] },
         ]}
       >
-        <View style={styles.logoCircle}>
-          <Text style={styles.logoIcon}>🍽</Text>
-        </View>
+        <Image
+          source={require('../../assets/icon.png')}
+          style={styles.logoImage}
+          resizeMode="contain"
+        />
         <Text style={styles.appName}>IC101</Text>
         <Text style={styles.appSubtitle}>Food App</Text>
       </Animated.View>
@@ -76,17 +79,10 @@ const styles = StyleSheet.create({
   logoContainer: {
     alignItems: 'center',
   },
-  logoCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
+  logoImage: {
+    width: 160,
+    height: 160,
     marginBottom: 20,
-  },
-  logoIcon: {
-    fontSize: 50,
   },
   appName: {
     fontSize: 42,
