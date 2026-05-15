@@ -13,7 +13,6 @@ import {
   Easing,
   Dimensions,
   Modal,
-  Image,
   TouchableWithoutFeedback,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -96,7 +95,7 @@ function FormattedText({ text, style }: { text: string; style?: object }) {
   );
 }
 
-function TypewriterText({ text, style, speed = 12, onTick }: {
+function TypewriterText({ text, style, speed = 30, onTick }: {
   text: string; style?: object; speed?: number; onTick?: () => void;
 }) {
   const [length, setLength] = useState(0);
@@ -343,7 +342,10 @@ export default function AIHelpScreen({ navigation }: Props) {
           </TouchableWithoutFeedback>
           <Animated.View style={[styles.sidebar, { transform: [{ translateX: slideAnim }] }]}>
             <View style={styles.sidebarHeader}>
-              <Image source={require('../../assets/logo.png')} style={styles.sidebarLogo} resizeMode="contain" />
+              <View>
+                <Text style={styles.navTitle}>🌼  IC101 Food App</Text>
+                <Text style={styles.navSubtitle}>Interstitial Cystitis Network</Text>
+              </View>
               <TouchableOpacity onPress={() => closeSidebar()} style={styles.closeButton}>
                 <Text style={styles.closeIcon}>✕</Text>
               </TouchableOpacity>
@@ -548,7 +550,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
-  sidebarLogo: { height: 60, width: 120 },
   closeButton: { width: 32, height: 32, borderRadius: 16, backgroundColor: 'rgba(255,255,255,0.1)', alignItems: 'center', justifyContent: 'center' },
   closeIcon: { color: Colors.white, fontSize: 14, fontWeight: '600' },
   sidebarMenu: { paddingTop: 12 },

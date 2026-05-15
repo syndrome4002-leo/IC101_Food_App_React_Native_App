@@ -91,12 +91,12 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   appSubtitle: {
-    fontSize: 20,
-    fontWeight: '400',
-    color: 'rgba(255,255,255,0.85)',
+    fontSize: 28,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.9)',
     letterSpacing: 4,
     textTransform: 'uppercase',
-    marginTop: 4,
+    marginTop: 6,
   },
   taglineContainer: {
     position: 'absolute',

@@ -13,7 +13,6 @@ import {
   Easing,
   Dimensions,
   ScrollView,
-  Image,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -241,11 +240,10 @@ export default function FoodsScreen({ navigation, route }: Props) {
           </TouchableWithoutFeedback>
           <Animated.View style={[styles.sidebar, { transform: [{ translateX: slideAnim }] }]}>
             <View style={styles.sidebarHeader}>
-              <Image
-                source={require('../../assets/logo.png')}
-                style={styles.sidebarLogo}
-                resizeMode="contain"
-              />
+              <View>
+                <Text style={styles.sidebarTitle}>🌼  IC101 Food App</Text>
+                <Text style={styles.sidebarSubtitle}>Interstitial Cystitis Network</Text>
+              </View>
               <TouchableOpacity onPress={() => closeSidebar()} style={styles.closeButton}>
                 <Text style={styles.closeIcon}>✕</Text>
               </TouchableOpacity>
@@ -547,13 +545,14 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   sidebarTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
     color: Colors.white,
   },
-  sidebarLogo: {
-    height: 60,
-    width: 120,
+  sidebarSubtitle: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.6)',
+    marginTop: 2,
   },
   closeButton: {
     width: 32,

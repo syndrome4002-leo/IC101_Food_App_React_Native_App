@@ -275,7 +275,10 @@ export default function AboutUsScreen({ navigation }: Props) {
           </TouchableWithoutFeedback>
           <Animated.View style={[styles.sidebar, { transform: [{ translateX: slideAnim }] }]}>
             <View style={styles.sidebarHeader}>
-              <Image source={require('../../assets/logo.png')} style={styles.sidebarLogo} resizeMode="contain" />
+              <View>
+                <Text style={styles.navTitle}>🌼  IC101 Food App</Text>
+                <Text style={styles.navSubtitle}>Interstitial Cystitis Network</Text>
+              </View>
               <TouchableOpacity onPress={() => closeSidebar()} style={styles.closeButton}>
                 <Text style={styles.closeIcon}>✕</Text>
               </TouchableOpacity>
@@ -457,7 +460,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
-  sidebarLogo: { height: 60, width: 120 },
   closeButton: {
     width: 32, height: 32, borderRadius: 16,
     backgroundColor: 'rgba(255,255,255,0.1)',
