@@ -13,6 +13,7 @@ import {
   Easing,
   Dimensions,
   ScrollView,
+  Linking,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -222,6 +223,18 @@ export default function FoodsScreen({ navigation, route }: Props) {
                     );
                   })}
                 </ScrollView>
+
+                {selectedFood?.reference ? (
+                  <TouchableOpacity
+                    style={styles.referenceRow}
+                    activeOpacity={0.7}
+                    onPress={() => Linking.openURL(selectedFood?.reference ?? '')}
+                  >
+                    <Text style={styles.referenceText}>
+                      🔗 <Text style={styles.referenceLink}>View source / reference</Text>
+                    </Text>
+                  </TouchableOpacity>
+                ) : null}
 
                 <TouchableOpacity style={styles.modalCloseBtn} onPress={() => setSelectedFood(null)}>
                   <Text style={styles.modalCloseBtnText}>Close</Text>
@@ -504,6 +517,21 @@ const styles = StyleSheet.create({
     marginTop: 6,
     lineHeight: 19,
     fontStyle: 'italic',
+  },
+  referenceRow: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+  },
+  referenceText: {
+    fontSize: 14,
+    color: Colors.textMuted,
+  },
+  referenceLink: {
+    color: '#1F7A3A',
+    fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   modalCloseBtn: {
     backgroundColor: Colors.sidebarBg,

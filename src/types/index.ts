@@ -17,6 +17,7 @@ export interface Food {
   _id: string;
   name: string;
   note: string;
+  reference?: string | null;
   cate_id: string;
   types: FoodType[];
 }
