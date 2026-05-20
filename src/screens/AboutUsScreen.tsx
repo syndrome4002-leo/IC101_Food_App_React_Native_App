@@ -20,6 +20,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors } from '../theme/colors';
 import { RootStackParamList } from '../types';
+import { useLinks } from '../context/LinksContext';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'AboutUs'>;
@@ -35,8 +36,11 @@ const MENU_ITEMS = [
   { key: 'about',      label: 'About Us',         icon: 'ℹ️' },
 ];
 
+// `key` matches the server `links` collection so URLs can be managed from the
+// admin panel; `url` is the built-in fallback used until the API responds.
 const BOOKS = [
   {
+    key: 'book_diet_guide',
     image: require('../../assets/book1.jpg'),
     title: 'The IC 101 Diet Guide',
     description:
@@ -44,6 +48,7 @@ const BOOKS = [
     url: 'https://www.icnsales.com/ic101-diet-guide.html',
   },
   {
+    key: 'book_flare_guide',
     image: require('../../assets/book2.jpg'),
     title: 'The IC 101 Flare Guide',
     description:
@@ -51,6 +56,7 @@ const BOOKS = [
     url: 'https://www.icnsales.com/ic101-the-flare-guide-print',
   },
   {
+    key: 'book_chef_cookbook',
     image: require('../../assets/book3.jpg'),
     title: 'The IC Chef Cookbook',
     description:
@@ -61,12 +67,14 @@ const BOOKS = [
 
 const RESOURCES = [
   {
+    key: 'resource_prelief',
     title: 'PRELIEF® Acid Reducer',
     description:
       'An OTC supplement that reduces acid in food. Just two caplets can reduce 95% of the acid in a cup of coffee, tomato sauce and more.',
     url: 'https://www.icnsales.com/prelief-acid-reducer/',
   },
   {
+    key: 'resource_masterclass',
     title: 'IC 101 Master Class Video Series',
     description:
       'Guides you through diagnosis, treatment, diet and flares.',
@@ -76,18 +84,21 @@ const RESOURCES = [
 
 const MORE_RESOURCES = [
   {
+    key: 'more_ic_diet_project',
     title: 'The IC Diet Project',
     description:
       'A website dedicated to creating enjoyable, flavorful low-acid meals. From low-acid salsa to your favorite holiday recipes, it offers easy, fun recipes to help you enjoy food again!',
     url: 'http://www.icdietproject.com',
   },
   {
+    key: 'more_bella_rosa',
     title: 'Bella Rosa Low-Acid Coffees',
     description:
       'Known for having the lowest level of chlorogenic acid in the industry today. If you are desperate for coffee but don’t want to trigger a flare, start with their decaf! Half caf and regular is also available.',
     url: 'https://www.icnsales.com/coffee-low-acid/',
   },
   {
+    key: 'more_herbal_teas',
     title: 'Bladder-Friendly Herbal Teas',
     description:
       'Chamomile, peppermint, and rooibos herbal teas are the most bladder-friendly. Chamomile can ease bladder and bowel spasms — ideal to drink before bed or if you are struggling with a flare.',
@@ -97,6 +108,7 @@ const MORE_RESOURCES = [
 
 export default function AboutUsScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
+  const { getLink } = useLinks();
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [activeMenu, setActiveMenu] = useState('about');
 
@@ -162,7 +174,7 @@ export default function AboutUsScreen({ navigation }: Props) {
           <Text style={styles.sectionTitle}>Who We Are</Text>
           <Text style={styles.paragraph}>
             The{' '}
-            <Text style={styles.link} onPress={() => openLink('https://www.icnetwork.org')}>
+            <Text style={styles.link} onPress={() => openLink(getLink('icn_home'))}>
               Interstitial Cystitis Network
             </Text>
             {' '}is a woman-owned health education company dedicated to
@@ -179,7 +191,7 @@ export default function AboutUsScreen({ navigation }: Props) {
           </Text>
           <Text style={styles.paragraph}>
             Learn more about IC and the diet at:{' '}
-            <Text style={styles.link} onPress={() => openLink('https://www.icnetwork.org')}>
+            <Text style={styles.link} onPress={() => openLink(getLink('icn_home'))}>
               www.icnetwork.org
             </Text>
           </Text>
@@ -192,10 +204,10 @@ export default function AboutUsScreen({ navigation }: Props) {
 
           {RESOURCES.map((r) => (
             <TouchableOpacity
-              key={r.url}
+              key={r.key}
               style={styles.linkCard}
               activeOpacity={0.7}
-              onPress={() => openLink(r.url)}
+              onPress={() => openLink(getLink(r.key, r.url))}
             >
               <View style={styles.linkCardBody}>
                 <Text style={styles.linkTitle}>{r.title}</Text>
@@ -213,10 +225,10 @@ export default function AboutUsScreen({ navigation }: Props) {
 
           {BOOKS.map((b) => (
             <TouchableOpacity
-              key={b.url}
+              key={b.key}
               style={styles.bookCard}
               activeOpacity={0.7}
-              onPress={() => openLink(b.url)}
+              onPress={() => openLink(getLink(b.key, b.url))}
             >
               <Image source={b.image} style={styles.bookImage} resizeMode="contain" />
               <View style={styles.bookBody}>
@@ -234,10 +246,10 @@ export default function AboutUsScreen({ navigation }: Props) {
 
           {MORE_RESOURCES.map((r) => (
             <TouchableOpacity
-              key={r.url}
+              key={r.key}
               style={styles.linkCard}
               activeOpacity={0.7}
-              onPress={() => openLink(r.url)}
+              onPress={() => openLink(getLink(r.key, r.url))}
             >
               <View style={styles.linkCardBody}>
                 <Text style={styles.linkTitle}>{r.title}</Text>
@@ -251,7 +263,7 @@ export default function AboutUsScreen({ navigation }: Props) {
         <TouchableOpacity
           style={styles.footer}
           activeOpacity={0.85}
-          onPress={() => openLink('https://www.icnetwork.org/')}
+          onPress={() => openLink(getLink('icn_home'))}
         >
           <Image
             source={require('../../assets/logo.png')}

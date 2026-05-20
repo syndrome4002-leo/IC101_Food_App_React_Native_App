@@ -14,6 +14,7 @@ import {
   Dimensions,
   Modal,
   TouchableWithoutFeedback,
+  Linking,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -21,6 +22,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Colors } from '../theme/colors';
 import { RootStackParamList } from '../types';
 import { API_BASE_URL } from '../config/api';
+import { useLinks } from '../context/LinksContext';
 
 type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'AIHelp'>;
@@ -155,6 +157,7 @@ function MessageBubble({ message, typewriter = false, onTick }: {
 
 export default function AIHelpScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
+  const { getLink } = useLinks();
   const [messages, setMessages] = useState<Message[]>([WELCOME]);
   const [typingMsgId, setTypingMsgId] = useState<string>('welcome');
   const [input, setInput] = useState('');
@@ -288,6 +291,19 @@ export default function AIHelpScreen({ navigation }: Props) {
         </TouchableOpacity>
       </View>
 
+      {/* Citation / source banner */}
+      <View style={styles.citationBanner}>
+        <Text style={styles.citationText}>
+          All data for this AI was compiled from the{' '}
+          <Text style={styles.citationLink} onPress={() => Linking.openURL(getLink('ai_diet_guide'))}>
+            IC101 Diet Guide
+          </Text>, a publication of the{' '}
+          <Text style={styles.citationLink} onPress={() => Linking.openURL(getLink('icn_home'))}>
+            Interstitial Cystitis Network
+          </Text>.
+        </Text>
+      </View>
+
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -407,6 +423,25 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: 'rgba(255,255,255,0.9)',
     borderRadius: 2,
+  },
+
+  // Citation banner
+  citationBanner: {
+    backgroundColor: Colors.cardBg,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  citationText: {
+    fontSize: 11,
+    lineHeight: 16,
+    color: Colors.textMuted,
+  },
+  citationLink: {
+    color: '#1F7A3A',
+    fontWeight: '600',
+    textDecorationLine: 'underline',
   },
 
   // Messages
