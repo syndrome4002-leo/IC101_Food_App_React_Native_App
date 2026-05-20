@@ -7,7 +7,8 @@ import { API_BASE_URL } from '../config/api';
  * Keep these keys in sync with DEFAULT_LINKS in server/api/index.js.
  */
 export const DEFAULT_LINKS: Record<string, string> = {
-  ai_diet_guide: 'https://www.icnetwork.org/interstitial-cystitis-diet/',
+  ai_food_lists: 'https://www.icnetwork.org/interstitial-cystitis-diet/',
+  ai_diet_guide: 'https://www.icnsales.com/ic101-diet-guide.html',
   icn_home: 'https://www.icnetwork.org',
   book_diet_guide: 'https://www.icnsales.com/ic101-diet-guide.html',
   book_flare_guide: 'https://www.icnsales.com/ic101-the-flare-guide-print',

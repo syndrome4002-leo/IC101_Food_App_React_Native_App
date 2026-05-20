@@ -295,9 +295,12 @@ export default function AIHelpScreen({ navigation }: Props) {
       <View style={styles.citationBanner}>
         <Text style={styles.citationText}>
           All data for this AI was compiled from the{' '}
+          <Text style={styles.citationLink} onPress={() => Linking.openURL(getLink('ai_food_lists'))}>
+            ICN Food Lists
+          </Text>, the{' '}
           <Text style={styles.citationLink} onPress={() => Linking.openURL(getLink('ai_diet_guide'))}>
             IC101 Diet Guide
-          </Text>, a publication of the{' '}
+          </Text>, both publications of the{' '}
           <Text style={styles.citationLink} onPress={() => Linking.openURL(getLink('icn_home'))}>
             Interstitial Cystitis Network
           </Text>.
