@@ -38,8 +38,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": ""
+        "projectId": "0ac4e33d-ef4f-4388-91db-e735ad3f5cb1"
       }
-    }
+    },
+    "owner": "syndrome4002"
   }
 }
