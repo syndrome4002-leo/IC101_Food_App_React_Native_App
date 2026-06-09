@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import SplashScreen from './src/screens/SplashScreen';
 import CategoriesScreen from './src/screens/CategoriesScreen';
 import FoodsScreen from './src/screens/FoodsScreen';
@@ -16,8 +17,9 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
     <SafeAreaProvider>
-      <LinksProvider>
-        <NavigationContainer>
+      <KeyboardProvider>
+        <LinksProvider>
+          <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Splash" component={SplashScreen} />
             <Stack.Screen name="Categories" component={CategoriesScreen} />
@@ -26,8 +28,9 @@ export default function App() {
             <Stack.Screen name="AIHelp" component={AIHelpScreen} />
             <Stack.Screen name="AboutUs" component={AboutUsScreen} />
           </Stack.Navigator>
-        </NavigationContainer>
-      </LinksProvider>
+          </NavigationContainer>
+        </LinksProvider>
+      </KeyboardProvider>
     </SafeAreaProvider>
   );
 }
