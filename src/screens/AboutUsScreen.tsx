@@ -310,6 +310,17 @@ export default function AboutUsScreen({ navigation }: Props) {
                 </TouchableOpacity>
               ))}
             </View>
+
+            {/* Medical disclaimer */}
+            <View style={styles.sidebarDisclaimer}>
+              <Text style={styles.sidebarDisclaimerText}>
+                The IC101 Food App provides general information only and is not a
+                substitute for professional medical advice, diagnosis, or treatment.
+                Always seek advice from a qualified healthcare provider regarding
+                medical conditions, and never disregard professional advice because
+                of app content.
+              </Text>
+            </View>
           </Animated.View>
         </View>
       </Modal>
@@ -478,7 +489,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
   },
   closeIcon: { color: Colors.white, fontSize: 14, fontWeight: '600' },
-  sidebarMenu: { paddingTop: 12 },
+  sidebarMenu: { flex: 1, paddingTop: 12 },
   menuItem: {
     flexDirection: 'row', alignItems: 'center',
     paddingVertical: 14, paddingHorizontal: 20, gap: 14,
@@ -489,4 +500,16 @@ const styles = StyleSheet.create({
   menuItemIcon: { fontSize: 18 },
   menuItemLabel: { fontSize: 15, fontWeight: '500', color: Colors.sidebarText },
   menuItemLabelActive: { color: Colors.white, fontWeight: '600' },
+  sidebarDisclaimer: {
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 28,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.12)',
+  },
+  sidebarDisclaimerText: {
+    fontSize: 13,
+    lineHeight: 20,
+    color: 'rgba(255,255,255,0.5)',
+  },
 });

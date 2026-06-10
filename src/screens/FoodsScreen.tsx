@@ -284,6 +284,17 @@ export default function FoodsScreen({ navigation, route }: Props) {
                 </TouchableOpacity>
               ))}
             </View>
+
+            {/* Medical disclaimer */}
+            <View style={styles.sidebarDisclaimer}>
+              <Text style={styles.sidebarDisclaimerText}>
+                The IC101 Food App provides general information only and is not a
+                substitute for professional medical advice, diagnosis, or treatment.
+                Always seek advice from a qualified healthcare provider regarding
+                medical conditions, and never disregard professional advice because
+                of app content.
+              </Text>
+            </View>
           </Animated.View>
         </View>
       </Modal>
@@ -596,6 +607,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   sidebarMenu: {
+    flex: 1,
     paddingTop: 12,
   },
   menuItem: {
@@ -622,5 +634,17 @@ const styles = StyleSheet.create({
   menuItemLabelActive: {
     color: Colors.white,
     fontWeight: '600',
+  },
+  sidebarDisclaimer: {
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    paddingBottom: 28,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.12)',
+  },
+  sidebarDisclaimerText: {
+    fontSize: 13,
+    lineHeight: 20,
+    color: 'rgba(255,255,255,0.5)',
   },
 });
