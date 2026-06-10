@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#3FBA64"
       },
-      "package": "com.ic101.foodapp",
+      "package": "com.ic101.foods",
       "softwareKeyboardLayoutMode": "resize",
       "splash": {
         "image": "./assets/splash-icon.png",
