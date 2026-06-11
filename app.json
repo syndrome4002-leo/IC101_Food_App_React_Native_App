@@ -26,7 +26,7 @@
         "backgroundColor": "#3FBA64"
       },
       "package": "com.ic101.foods",
-      "versionCode": 11,
+      "versionCode": 12,
       "softwareKeyboardLayoutMode": "resize",
       "splash": {
         "image": "./assets/splash-icon.png",
@@ -39,9 +39,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "0ac4e33d-ef4f-4388-91db-e735ad3f5cb1"
+        "projectId": "0d45538a-dca3-4145-b8a0-870a2d59c511"
       }
     },
-    "owner": "syndrome4002"
+    "owner": ""
   }
 }
