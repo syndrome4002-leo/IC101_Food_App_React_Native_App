@@ -382,7 +382,7 @@ export default function AIHelpScreen({ navigation }: Props) {
             </View>
 
             {/* Medical disclaimer */}
-            <View style={[styles.sidebarDisclaimer, { paddingBottom: insets.bottom + 36 }]}>
+            <View style={[styles.sidebarDisclaimer, { paddingBottom: Math.max(insets.bottom, 24) + 48 }]}>
               <Text style={styles.sidebarDisclaimerText}>
                 The IC101 Food App provides general information only and is not a
                 substitute for professional medical advice, diagnosis, or treatment.
