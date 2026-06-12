@@ -2,7 +2,7 @@
   "expo": {
     "name": "IC101 Food App",
     "slug": "ic101-food-app",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -26,7 +26,7 @@
         "backgroundColor": "#3FBA64"
       },
       "package": "com.ic101.foods",
-      "versionCode": 14,
+      "versionCode": 15,
       "softwareKeyboardLayoutMode": "resize",
       "splash": {
         "image": "./assets/splash-icon.png",
